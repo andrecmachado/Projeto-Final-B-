@@ -1,0 +1,67 @@
+package dao;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ *
+ * @author Gisele
+ */
+public class Emprestimo implements Serializable{
+    private static final long serialVersionUID = 1L;
+    private Date dataEmprestimo;
+    private Date dataPlanejadaDevolucao;
+    private Exemplar codExemplarEmprestado;
+    private Pessoa matricula;
+    private String tipoPessoa;
+    
+    public Emprestimo(){}
+
+    public Emprestimo(String tipoPessoa, Pessoa matricula, Date dataEmprestimo, Date dataPlanejadaDevolucao, Exemplar codExemplarEmprestado) {
+        this.tipoPessoa = tipoPessoa;
+        this.matricula = matricula;
+        this.dataEmprestimo = dataEmprestimo;
+        this.dataPlanejadaDevolucao = dataPlanejadaDevolucao;
+        this.codExemplarEmprestado = codExemplarEmprestado;
+    }
+
+    public Date getDataEmprestimo() {
+        return dataEmprestimo;
+    }
+
+    public void setDataEmprestimo(Date dataEmprestimo) {
+        this.dataEmprestimo = dataEmprestimo;
+    }
+
+    public Date getDataPlanejadaDevolucao() {
+        return dataPlanejadaDevolucao;
+    }
+
+    public void setDataPlanejadaDevolucao(Date dataPlanejadaDevolucao) {
+        this.dataPlanejadaDevolucao = dataPlanejadaDevolucao;
+    }
+
+    public Exemplar getCodExemplarEmprestado() {
+        return codExemplarEmprestado;
+    }
+
+    public void setCodExemplarEmprestado(Exemplar codExemplarEmprestado) {
+        this.codExemplarEmprestado = codExemplarEmprestado;
+    }
+
+    public Pessoa getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(Pessoa matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getTipoPessoa() {
+        return tipoPessoa;
+    }
+
+    public void setTipoPessoa(String tipoPessoa) {
+        this.tipoPessoa = tipoPessoa;
+    }
+}
