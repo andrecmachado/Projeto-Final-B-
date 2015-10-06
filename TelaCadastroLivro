@@ -1,0 +1,128 @@
+
+package interfaces;
+
+import controle.ControladorBiblioteca;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import persistencia.MapeadorRevista;
+import wrapper.PegaDadosTelaCadastroLivro;
+
+
+public class TelaCadastroLivro extends JFrame{
+    private static final long serialVersionUID = 1L;
+    JLabel lbCodigo, lbTitulo, lbAutores, lbGenero, lbFaixaEtaria, lbDisponivel, lbAno, lbMes, lbVolume;
+    JTextField tfCodigo, tfTitulo, tfAutores, tfGenero, tfFaixaEtaria, tfDisponivel;
+    JButton btSalvar, btVoltar;
+    
+    public TelaCadastroLivro() {
+        Container container = getContentPane();
+        container.setLayout(new GridLayout(0,2));
+        GerenciadorBotoes btManager = new GerenciadorBotoes();
+        
+        lbCodigo = new JLabel();
+        lbTitulo = new JLabel();
+        lbAutores = new JLabel();
+        lbGenero = new JLabel();
+        lbFaixaEtaria = new JLabel();
+        lbDisponivel = new JLabel();
+        lbAno = new JLabel();
+        lbMes = new JLabel();
+        lbVolume = new JLabel();
+        tfCodigo = new JTextField();
+        tfTitulo = new JTextField();
+        tfAutores = new JTextField();
+        tfGenero = new JTextField();
+        tfFaixaEtaria = new JTextField();
+        tfDisponivel = new JTextField();
+        btSalvar = new JButton();
+        btVoltar = new JButton();
+        
+        lbCodigo.setText("Código: ");
+        lbTitulo.setText("Título: ");
+        lbAutores.setText("Autores: ");
+        lbGenero.setText("Genêro: ");
+        lbFaixaEtaria.setText("Faixa etária: ");
+        lbDisponivel.setText("Disponível: ");
+        btSalvar.setText("Salvar");
+        btSalvar.setActionCommand("1");
+        btVoltar.setText("Voltar");
+        btVoltar.setActionCommand("2");
+        
+        btSalvar.addActionListener(btManager);
+        btVoltar.addActionListener(btManager);
+        
+        container.add(lbCodigo);
+        container.add(tfCodigo);
+        container.add(lbTitulo);
+        container.add(tfTitulo);
+        container.add(lbAutores);
+        container.add(tfAutores);
+        container.add(lbGenero);
+        container.add(tfGenero);
+        container.add(lbFaixaEtaria);
+        container.add(tfFaixaEtaria);
+        container.add(lbDisponivel);
+        container.add(tfDisponivel);
+        container.add(btSalvar);
+        container.add(btVoltar);
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private class GerenciadorBotoes implements ActionListener{
+
+        public GerenciadorBotoes() {}
+        
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if (null != ae.getActionCommand())
+                switch (ae.getActionCommand()) {
+                case "1":
+                    try{
+                            PegaDadosTelaCadastroLivro dados = new PegaDadosTelaCadastroLivro();
+                            int cod = Integer.parseInt(tfCodigo.getText());
+                            dados.codigo = cod;
+                            dados.titulo = tfTitulo.getText();
+                            dados.autores = tfAutores.getText();
+                            dados.genero = tfGenero.getText();
+                            dados.faixa_etaria = tfFaixaEtaria.getText();
+                            dados.disponivel = tfDisponivel.getText();
+                            ControladorBiblioteca.getInstance().cadastrar(dados);
+                            tfCodigo.setText(null);
+                            tfTitulo.setText(null);
+                            tfAutores.setText(null);
+                            tfGenero.setText(null);
+                            tfFaixaEtaria.setText(null);
+                            tfDisponivel.setText(null);
+                    } catch (Exception e){
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                    }   break;
+                case "2":
+                    try{
+                        ControladorBiblioteca.getInstance().voltar();
+                        tfCodigo.setText(null);
+                        tfTitulo.setText(null);
+                        tfAutores.setText(null);
+                        tfGenero.setText(null);
+                        tfFaixaEtaria.setText(null);
+                        tfDisponivel.setText(null);
+                    } catch (Exception e){
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                    }   break;
+                default:
+                    ControladorBiblioteca.getInstance().aviso();
+                    break;
+                }
+        }
+
+        
+    }
+}
