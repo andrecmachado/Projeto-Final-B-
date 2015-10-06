@@ -1,0 +1,152 @@
+
+package interfaces;
+
+import controle.ControladorBiblioteca;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import persistencia.MapeadorRevista;
+import wrapper.PegaDadosTelaRelatorio;
+
+
+public class TelaRelatorio extends JFrame{
+    private static final long serialVersionUID = 1L;
+    JLabel lbData, lbPessoa, lbExemplar, lbEmprestimo, lbLinha, lbLinha1, lbLinha2, lbLinha3, lbLinha4, lbLinha5,
+            lbLinha6, lbLinha7, lbLinha8, lbLinha9;
+    JTextField tfData;
+    JButton btGerar, btVoltar, btGerarPessoa, btGerarExemplar, btGerarEmprestimo;
+    
+    public TelaRelatorio() {
+        Container container = getContentPane();
+        container.setLayout(new GridLayout(0,2));
+        GerenciadorBotoes btManager = new GerenciadorBotoes();
+        
+        lbData = new JLabel();
+        lbPessoa = new JLabel();
+        lbExemplar = new JLabel();
+        lbEmprestimo = new JLabel();
+        lbLinha = new JLabel();
+        lbLinha1 = new JLabel();
+        lbLinha2 = new JLabel();
+        lbLinha3 = new JLabel();
+        lbLinha4 = new JLabel();
+        lbLinha5 = new JLabel();
+        lbLinha6 = new JLabel();
+        lbLinha7 = new JLabel();
+        lbLinha8 = new JLabel();
+        lbLinha9 = new JLabel();
+        tfData = new JTextField();
+        btGerar = new JButton();
+        btGerarEmprestimo = new JButton();
+        btGerarPessoa = new JButton();
+        btGerarExemplar = new JButton();
+        btVoltar = new JButton();
+        
+        lbData.setText("Data: ");
+        btGerar.setText("Gerar Relatório");
+        btGerar.setActionCommand("1");
+        lbEmprestimo.setText("Empréstimos Cadastrados: ");
+        btGerarEmprestimo.setText("Gerar Relatório");
+        btGerarEmprestimo.setActionCommand("2");
+        lbPessoa.setText("Pessoas Cadastradas: ");
+        btGerarPessoa.setText("Gerar Relatório");
+        btGerarPessoa.setActionCommand("3");
+        lbExemplar.setText("Exemplares Cadastrados: ");
+        btGerarExemplar.setText("Gerar Relatório");
+        btGerarExemplar.setActionCommand("4");
+        btVoltar.setText("Voltar");
+        btVoltar.setActionCommand("5");
+        
+        btGerar.addActionListener(btManager);
+        btGerarEmprestimo.addActionListener(btManager);
+        btGerarPessoa.addActionListener(btManager);
+        btGerarExemplar.addActionListener(btManager);
+        btVoltar.addActionListener(btManager);
+        
+        container.add(lbData);
+        container.add(tfData);
+        container.add(lbLinha);
+        container.add(btGerar);
+        container.add(lbLinha8);
+        container.add(lbLinha9);
+        container.add(lbEmprestimo);
+        container.add(btGerarEmprestimo);
+        container.add(lbLinha1);
+        container.add(lbLinha2);
+        container.add(lbPessoa);
+        container.add(btGerarPessoa);
+        container.add(lbLinha3);
+        container.add(lbLinha4);
+        container.add(lbExemplar);
+        container.add(btGerarExemplar);
+        container.add(lbLinha5);
+        container.add(lbLinha6);
+        container.add(lbLinha7);
+        container.add(btVoltar);
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private class GerenciadorBotoes implements ActionListener{
+
+        public GerenciadorBotoes() {}
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if (null != ae.getActionCommand())
+                switch (ae.getActionCommand()) {
+                case "1":
+                    try{
+                        PegaDadosTelaRelatorio dados = new PegaDadosTelaRelatorio();
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        java.sql.Date data = new java.sql.Date(format.parse(tfData.getText()).getTime());
+                        dados.data = data;
+                        ControladorBiblioteca.getInstance().gerarRelatorio(dados);
+                    } catch (Exception e){
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    }   break;
+                case "2":
+                    try {
+                        ControladorBiblioteca.getInstance().gerarRelatorioEmprestimos();
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    } break;
+                case "3":
+                    try {
+                        ControladorBiblioteca.getInstance().gerarRelatorioPessoa();
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    } break;
+                case "4":
+                    try {
+                        ControladorBiblioteca.getInstance().gerarRelatorioExemplar();
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    }break;
+                case "5":
+                    try{
+                        ControladorBiblioteca.getInstance().voltar();
+                    } catch (Exception e){
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    }   break;
+                default:
+                    ControladorBiblioteca.getInstance().aviso();
+                    break;
+                }
+        }
+    }
+    
+}
