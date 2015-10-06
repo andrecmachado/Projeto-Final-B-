@@ -1,0 +1,117 @@
+package persistencia;
+
+import controle.ControladorBiblioteca;
+import dao.Devolucao;
+import dao.Emprestimo;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class MapeadorEmprestimo {
+
+    private HashMap<Integer, Emprestimo> cacheEmprestimos = new HashMap<>();
+    private final String filename = "emprestimos.dat";
+
+    public MapeadorEmprestimo() {
+        this.load();
+    }
+
+    public Emprestimo get(Integer idEmprestimo) {
+        return cacheEmprestimos.get(idEmprestimo);
+    }
+
+    public void put(Emprestimo emprestimo) {
+        boolean jaExiste = false;
+        Integer ultimoId;
+        int cont = 0;
+
+        ultimoId = cacheEmprestimos.size();
+        ultimoId++;
+
+        if (emprestimo != null) {
+            for (Emprestimo e : cacheEmprestimos.values()) {
+                if (emprestimo.getMatricula() == e.getMatricula()) {
+                    cont++;
+                }
+
+                if (emprestimo.getMatricula() == e.getMatricula()) {
+                    if (emprestimo.getCodExemplarEmprestado() == e.getCodExemplarEmprestado()) {
+                        jaExiste = true;
+                    }
+                }
+            }
+        }
+        if ("Aluno".equals(emprestimo.getTipoPessoa())) {
+            if (jaExiste || cont >= 3) {
+                ControladorBiblioteca.getInstance().semSucesso();
+            } else {
+                cacheEmprestimos.put(ultimoId, emprestimo);
+                persist();
+                ControladorBiblioteca.getInstance().comSucesso();
+            }
+        } else if ("Professor".equals(emprestimo.getTipoPessoa())) {
+            if (jaExiste || cont >= 5) {
+                ControladorBiblioteca.getInstance().semSucesso();
+            } else {
+                cacheEmprestimos.put(ultimoId, emprestimo);
+                persist();
+                ControladorBiblioteca.getInstance().comSucesso();
+            }
+        }
+    }
+
+    public void persist() {
+        try {
+            FileOutputStream out = new FileOutputStream(filename);
+            ObjectOutputStream obj = new ObjectOutputStream(out);
+            obj.writeObject(cacheEmprestimos);
+            obj.flush();
+            out.flush();
+            obj.close();
+            out.close();
+            obj = null;
+            out = null;
+        } catch (Exception e) {
+            Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    public void load() {
+        try {
+            FileInputStream in = new FileInputStream(filename);
+            ObjectInputStream obj = new ObjectInputStream(in);
+            this.cacheEmprestimos = (HashMap<Integer, Emprestimo>) obj.readObject();
+            obj.close();
+            in.close();
+            obj = null;
+            in = null;
+        } catch (IOException | ClassNotFoundException e) {
+            Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    public Collection<Emprestimo> getEmprestimos() {
+        return cacheEmprestimos.values();
+    }
+
+    public void remove(Devolucao devolucao) {
+        Integer cod;
+        boolean jaExiste = false;
+        for(Emprestimo e : cacheEmprestimos.values()){
+            if (devolucao.getCodExemplarEmprestado() == e.getCodExemplarEmprestado()){
+                jaExiste = true;
+            }
+        }
+        
+        if (jaExiste) {
+            cacheEmprestimos.remove(1);
+        }
+    }
+}
