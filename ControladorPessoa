@@ -1,0 +1,47 @@
+package controle;
+
+import dao.Aluno;
+import dao.Professor;
+import persistencia.MapeadorAluno;
+import persistencia.MapeadorProfessor;
+
+public class ControladorPessoa {
+    MapeadorAluno mapAluno;
+    MapeadorProfessor mapProfessor;
+    
+    public ControladorPessoa(){
+        mapAluno = new MapeadorAluno();
+        mapProfessor = new MapeadorProfessor();
+    }
+
+    public void getAlunos() {
+        System.out.println("\nAlunos: ");
+        for (Aluno a : mapAluno.getAlunos()){
+            System.out.println("Matrícula: "+a.getMatricula()+
+                    " | Nome: "+a.getNomeCompleto()+
+                    " | Idade: "+a.getIdade()+
+                    " | Endereço: "+a.getEndereco()+
+                    " | Turma: "+a.getTurma());
+        }
+    }
+
+    public void getProfessores() {
+        System.out.println("\nProfessores: ");
+        for (Professor p : mapProfessor.getProfessores()){
+            System.out.println("Matrícula: "+p.getMatricula()+
+                    " | Nome: "+p.getNomeCompleto()+
+                    " | Idade: "+p.getIdade()+
+                    " | Endereço: "+p.getEndereco()+
+                    " | Turma responsável: "+p.getResponsavel()+
+                    " | Disciplina responsável: "+p.getDisciplina());
+        }
+    }
+    
+    public void cadastrarAluno(Aluno aluno) {
+        mapAluno.put(aluno);
+    }
+    
+    public void cadastrarProfessor(Professor professor){
+        mapProfessor.put(professor);
+    }
+}
