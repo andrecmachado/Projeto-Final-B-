@@ -1,0 +1,88 @@
+package persistencia;
+
+import controle.ControladorBiblioteca;
+import dao.Exemplar;
+import dao.Revista;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class MapeadorRevista {
+
+    private HashMap<Integer, Revista> cacheRevistas = new HashMap<>();
+    private final String filename = "revistas.dat";
+
+    public MapeadorRevista() {
+        this.load();
+    }
+
+    public Revista get(Integer idRevista) {
+        return cacheRevistas.get(idRevista);
+    }
+
+    public void put(Revista revista) {
+        boolean jaExiste = false;
+        Exemplar exemplar;
+
+        if (revista != null) {
+            if (cacheRevistas.get(revista.getCodigo()) != null) {
+                jaExiste = true;
+            }
+        }
+        if (jaExiste) {
+            ControladorBiblioteca.getInstance().semSucesso();
+        } else {
+            cacheRevistas.put(revista.getCodigo(), revista);
+            exemplar = new Exemplar(revista.getCodigo(), revista.getTitulo(), revista.getDisponivel());
+            revista.put(exemplar);
+            persist();
+            ControladorBiblioteca.getInstance().comSucesso();
+        }
+    }
+
+    public void persist() {
+        try {
+            FileOutputStream out = new FileOutputStream(filename);
+            ObjectOutputStream obj = new ObjectOutputStream(out);
+            obj.writeObject(cacheRevistas);
+            obj.flush();
+            out.flush();
+            obj.close();
+            out.close();
+            obj = null;
+            out = null;
+        } catch (Exception e) {
+            Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    public void load() {
+        try {
+            FileInputStream in = new FileInputStream(filename);
+            ObjectInputStream obj = new ObjectInputStream(in);
+            this.cacheRevistas = (HashMap<Integer, Revista>) obj.readObject();
+            obj.close();
+            in.close();
+            obj = null;
+            in = null;
+        } catch (IOException | ClassNotFoundException e) {
+            Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    public Collection<Revista> getRevistas() {
+        return cacheRevistas.values();
+    }
+    
+    public Collection<Exemplar> getExemplares(){
+        Revista r = null;
+        return r.getExemplares();
+    }
+}
