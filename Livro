@@ -1,0 +1,110 @@
+package dao;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashMap;
+
+/**
+ *
+ * @author Gisele
+ */
+public class Livro implements Serializable{
+    private static final long serialVersionUID = 1L;
+    private Integer codigo;
+    private String titulo;
+    private String autores;
+    private String genero;
+    private String faixa_etaria;
+    private String disponivel;
+    private HashMap<Integer, Exemplar> cacheExemplaresL;
+    
+    public Livro(){}
+
+    public Livro(Integer codigo, String titulo, String autores, String genero, String faixa_etaria, String disponivel) {
+        this.codigo = codigo;
+        this.titulo = titulo;
+        this.disponivel = disponivel;
+        this.autores = autores;
+        this.faixa_etaria = faixa_etaria;
+        this.genero = genero;
+        cacheExemplaresL = new HashMap<>();
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(String disponivel) {
+        this.disponivel = disponivel;
+    }
+
+    public String getAutores() {
+        return autores;
+    }
+
+    public void setAutores(String autores) {
+        this.autores = autores;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public String getFaixa_etaria() {
+        return faixa_etaria;
+    }
+
+    public void setFaixa_etaria(String faixa_etaria) {
+        this.faixa_etaria = faixa_etaria;
+    }
+    
+    
+    /*
+    Mapeador para Exemplar
+    */
+    private final String filename = "exemplares.dat";
+    
+    public Exemplar get (Integer idExemplar){
+        boolean jaExiste = false;
+        Exemplar exemplar = null;
+        
+        if(idExemplar != null){
+            if (cacheExemplaresL.containsKey(idExemplar)){
+             jaExiste = true;
+            }
+        }
+        if (jaExiste == true) {
+            exemplar = cacheExemplaresL.get(idExemplar);
+        }
+        return exemplar;
+    }
+    
+    public void put (Exemplar exemplar){
+        cacheExemplaresL.put(exemplar.getCodigo(), exemplar);
+    }
+    
+    public Collection<Exemplar> getExemplares() {
+        return cacheExemplaresL.values();
+    }
+
+}
