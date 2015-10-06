@@ -1,0 +1,79 @@
+package persistencia;
+
+import controle.ControladorBiblioteca;
+import dao.Professor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class MapeadorProfessor {
+
+    private HashMap<Integer, Professor> cacheProfessores = new HashMap<>();
+    private final String filename = "professores.dat";
+
+    public MapeadorProfessor() {
+        this.load();
+    }
+
+    public Professor get(Integer idProfessor) {
+        return cacheProfessores.get(idProfessor);
+    }
+
+    public void put(Professor professor) {
+        boolean jaExiste = false;
+
+        if (professor != null) {
+            if (cacheProfessores.get(professor.getMatricula()) != null) {
+                jaExiste = true;
+            }
+        }
+        if (jaExiste) {
+            ControladorBiblioteca.getInstance().semSucesso();
+        } else {
+            cacheProfessores.put(professor.getMatricula(), professor);
+            persist();
+            ControladorBiblioteca.getInstance().comSucesso();
+        }
+    }
+
+    public void persist() {
+        try {
+            FileOutputStream out = new FileOutputStream(filename);
+            ObjectOutputStream obj = new ObjectOutputStream(out);
+            obj.writeObject(cacheProfessores);
+            obj.flush();
+            out.flush();
+            obj.close();
+            out.close();
+            obj = null;
+            out = null;
+        } catch (Exception e) {
+            Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    public void load() {
+        try {
+            FileInputStream in = new FileInputStream(filename);
+            ObjectInputStream obj = new ObjectInputStream(in);
+            this.cacheProfessores = (HashMap<Integer, Professor>) obj.readObject();
+            obj.close();
+            in.close();
+            obj = null;
+            in = null;
+        } catch (IOException | ClassNotFoundException e) {
+            Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    public Collection<Professor> getProfessores() {
+        return cacheProfessores.values();
+    }
+}
