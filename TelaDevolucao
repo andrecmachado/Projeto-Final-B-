@@ -1,0 +1,95 @@
+package interfaces;
+
+import controle.ControladorBiblioteca;
+import dao.Exemplar;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import persistencia.MapeadorRevista;
+import wrapper.PegaDadosTelaDevolucao;
+
+
+public class TelaDevolucao extends JFrame{
+    private static final long serialVersionUID = 1L;
+    JLabel lbExemplar, lbDataDevolucao;
+    JTextField tfExemplar, tfDataDevolucao;
+    JButton btSalvar, btVoltar;
+    
+    public TelaDevolucao() {
+        Container container = getContentPane();
+        container.setLayout(new GridLayout(0,2));
+        GerenciadorBotoes btManager = new GerenciadorBotoes();
+        
+        lbExemplar = new JLabel();
+        lbDataDevolucao = new JLabel();
+        tfExemplar = new JTextField();
+        tfDataDevolucao = new JTextField();
+        btSalvar = new JButton();
+        btVoltar = new JButton();
+        
+        lbExemplar.setText("Código Exemplar Emprestado: ");
+        lbDataDevolucao.setText("Data de Devolução: ");
+        btSalvar.setText("Salvar");
+        btSalvar.setActionCommand("1");
+        btVoltar.setText("Voltar");
+        btVoltar.setActionCommand("2");
+        
+        btSalvar.addActionListener(btManager);
+        btVoltar.addActionListener(btManager);
+        
+        container.add(lbExemplar);
+        container.add(tfExemplar);
+        container.add(lbDataDevolucao);
+        container.add(tfDataDevolucao);
+        container.add(btSalvar);
+        container.add(btVoltar);
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private class GerenciadorBotoes implements ActionListener{
+
+        public GerenciadorBotoes() {}
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+             if (null != ae.getActionCommand())
+                switch (ae.getActionCommand()) {
+                case "1":
+                    try{
+                        PegaDadosTelaDevolucao dados = new PegaDadosTelaDevolucao();
+                        Integer cod = Integer.parseInt(tfExemplar.getText());
+                        dados.codExemplarEmprestado = new Exemplar(cod);
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        java.sql.Date data = new java.sql.Date(format.parse(tfDataDevolucao.getText()).getTime());
+                        dados.dataDevolucao = data;
+                        ControladorBiblioteca.getInstance().devolveLivro(dados);
+                        tfExemplar.setText(null);
+                        tfDataDevolucao.setText(null);
+                    } catch (Exception e){
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                    }   break;
+                case "2":
+                    try{
+                        ControladorBiblioteca.getInstance().voltar();
+                        tfExemplar.setText(null);
+                        tfDataDevolucao.setText(null);
+                    } catch (Exception e){
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                    }   break;
+                default:
+                    ControladorBiblioteca.getInstance().aviso();
+                    break;
+                }
+        }
+    }
+    
+}
