@@ -1,0 +1,55 @@
+package controle;
+
+import dao.Exemplar;
+import dao.Livro;
+import dao.Revista;
+import persistencia.MapeadorLivro;
+import persistencia.MapeadorRevista;
+
+public class ControladorExemplar {
+    MapeadorLivro mapLivro;
+    MapeadorRevista mapRevista;
+    
+    public ControladorExemplar(){
+        mapLivro = new MapeadorLivro();
+        mapRevista = new MapeadorRevista();
+    }
+
+    public void getLivros(){
+        System.out.println("\nExemplares de livros: ");
+        for (Livro l : mapLivro.getLivros()){
+            System.out.println("Código: "+l.getCodigo()+
+                    " | Título: "+l.getTitulo()+
+                    " | Genero: "+l.getGenero()+
+                    " | Faixa-Etária: "+l.getFaixa_etaria()+
+                    " | Autor: "+l.getAutores()+
+                    " | Disponivel: "+l.getDisponivel());
+        }
+    }
+    
+    public void getRevistas(){
+        System.out.println("\nExemplares de revistas: ");
+        for (Revista r : mapRevista.getRevistas()){
+            System.out.println("Código: "+r.getCodigo()+
+                    " | Título: "+r.getTitulo()+
+                    " | Volume: "+r.getVolume()+
+                    " | Mês: "+r.getMes()+
+                    " | Ano: "+r.getAno()+
+                    " | Disponivel: "+r.getDisponivel());
+        }
+    }
+    
+    public void cadastrarLivro(Livro livro){
+        mapLivro.put(livro);
+    }
+    
+    public void cadastrarRevista(Revista revista){
+        mapRevista.put(revista);
+    }
+
+    public Exemplar buscaExemplarPeloCodigo(Integer codExemplarEmprestado) {
+        Exemplar exemplar = null;
+        exemplar = mapLivro.buscaExemplarPeloCodigo(codExemplarEmprestado);
+        return exemplar;
+    }
+}
