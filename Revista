@@ -1,0 +1,105 @@
+package dao;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashMap;
+
+
+public class Revista implements Serializable{
+    private static final long serialVersionUID = 1L;
+    private Integer codigo;
+    private String titulo;
+    private String disponivel;
+    private String ano;
+    private String mes;
+    private String volume;
+    private HashMap<Integer, Exemplar> cacheExemplaresR;
+    
+    public Revista(){}
+
+    public Revista(Integer codigo, String titulo, String ano, String mes, String volume, String disponivel) {
+        this.codigo = codigo;
+        this.titulo = titulo;
+        this.disponivel = disponivel;
+        this.ano = ano;
+        this.mes = mes;
+        this.volume = volume;
+        cacheExemplaresR = new HashMap<>();
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(String disponivel) {
+        this.disponivel = disponivel;
+    }
+
+    public String getAno() {
+        return ano;
+    }
+
+    public void setAno(String ano) {
+        this.ano = ano;
+    }
+
+    public String getMes() {
+        return mes;
+    }
+
+    public void setMes(String mes) {
+        this.mes = mes;
+    }
+
+    public String getVolume() {
+        return volume;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
+    }
+    
+    /*
+    Mapeador para Exemplar
+    */
+    private final String filename = "exemplares.dat";
+    
+    public Exemplar get (Integer idExemplar){
+        boolean jaExiste = false;
+        Exemplar exemplar = null;
+        
+        if(idExemplar != null){
+            if (cacheExemplaresR.containsKey(idExemplar)){
+             jaExiste = true;
+            }
+        }
+        if (jaExiste == true) {
+            exemplar = cacheExemplaresR.get(idExemplar);
+        }
+        return exemplar;
+    }
+    
+    public void put (Exemplar exemplar){
+        cacheExemplaresR.put(exemplar.getCodigo(), exemplar);
+    }
+    
+    public Collection<Exemplar> getExemplares() {
+        return cacheExemplaresR.values();
+    }
+}
