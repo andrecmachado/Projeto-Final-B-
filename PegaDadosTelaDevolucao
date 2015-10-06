@@ -1,0 +1,10 @@
+package wrapper;
+
+import dao.Exemplar;
+import java.util.Date;
+
+
+public class PegaDadosTelaDevolucao {
+    public Date dataDevolucao;
+    public Exemplar codExemplarEmprestado;
+}
