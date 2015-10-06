@@ -1,0 +1,67 @@
+package dao;
+
+import java.io.Serializable;
+
+
+public class Pessoa implements Serializable{
+    private static final long serialVersionUID = 1L;
+    private Integer matricula;
+    private String nomeCompleto;
+    private int idade;
+    private String endereco;
+    private String filiacao;
+    
+    public Pessoa() {}
+    
+    public Pessoa(Integer matricula){
+        this.matricula = matricula;
+    }
+    
+    public Pessoa(Integer matricula, String nomeCompleto, int idade, String endereco, String filiacao) {
+        this.matricula = matricula;
+        this.nomeCompleto = nomeCompleto;
+        this.idade = idade;
+        this.endereco = endereco;
+        this.filiacao = filiacao;
+    }
+
+    public Integer getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(Integer matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getNomeCompleto() {
+        return nomeCompleto;
+    }
+
+    public void setNomeCompleto(String nomeCompleto) {
+        this.nomeCompleto = nomeCompleto;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getFiliacao() {
+        return filiacao;
+    }
+
+    public void setFiliacao(String filiacao) {
+        this.filiacao = filiacao;
+    }
+}
