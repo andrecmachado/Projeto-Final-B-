@@ -1,0 +1,12 @@
+package wrapper;
+
+
+public class PegaDadosTelaCadastroProfessor {
+    public int matricula;
+    public String nomeCompleto;
+    public int idade;
+    public String endereco;
+    public String filiacao;
+    public String responsavel;
+    public String disciplina;
+}
