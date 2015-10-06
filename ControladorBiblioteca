@@ -1,0 +1,197 @@
+
+package controle;
+
+import dao.Aluno;
+import dao.Devolucao;
+import dao.Emprestimo;
+import dao.Livro;
+import dao.Professor;
+import dao.Relatorio;
+import dao.Revista;
+import interfaces.TelaCadastroAluno;
+import interfaces.TelaCadastroLivro;
+import interfaces.TelaCadastroRevista;
+import interfaces.TelaCadastroProfessor;
+import interfaces.TelaDevolucao;
+import interfaces.TelaEmprestimo;
+import interfaces.TelaPrincipal;
+import interfaces.TelaRelatorio;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import wrapper.PegaDadosTelaCadastroAluno;
+import wrapper.PegaDadosTelaCadastroLivro;
+import wrapper.PegaDadosTelaCadastroProfessor;
+import wrapper.PegaDadosTelaCadastroRevista;
+import wrapper.PegaDadosTelaDevolucao;
+import wrapper.PegaDadosTelaEmprestimo;
+import wrapper.PegaDadosTelaRelatorio;
+
+
+public class ControladorBiblioteca extends JFrame {
+    private static final long serialVersionUID = 1L;
+    TelaPrincipal telaprincipal;
+    TelaCadastroAluno telaCadastroAluno;
+    TelaCadastroProfessor telaCadastroProfessor;
+    TelaCadastroLivro telaCadastroLivro;
+    TelaCadastroRevista telaCadastroRevista;
+    TelaEmprestimo telaEmprestimo;
+    TelaDevolucao telaDevolucao;
+    TelaRelatorio telaRelatorio;
+    private ControladorPessoa controladorP;
+    private ControladorExemplar controladorE;
+    private ControladorEmprestaDevolve controladorED;
+    private static ControladorBiblioteca instance = new ControladorBiblioteca();
+    
+    public static ControladorBiblioteca getInstance(){
+        return instance;
+    } 
+
+    private ControladorBiblioteca() {
+        telaprincipal = new TelaPrincipal();
+        telaCadastroAluno = new TelaCadastroAluno();
+        telaCadastroProfessor = new TelaCadastroProfessor();
+        telaCadastroLivro = new TelaCadastroLivro();
+        telaCadastroRevista = new TelaCadastroRevista();
+        telaEmprestimo = new TelaEmprestimo();
+        telaDevolucao = new TelaDevolucao();
+        telaRelatorio = new TelaRelatorio();
+        controladorP = new ControladorPessoa();
+        controladorE = new ControladorExemplar();
+        controladorED = new ControladorEmprestaDevolve();
+    }
+    
+    public void run(){
+        telaprincipal.setVisible(true);
+        telaprincipal.setSize(400,300);
+        telaprincipal.setLocation(450,200);
+    }
+    
+    public void voltar(){
+        telaprincipal.setVisible(true);
+        telaCadastroAluno.setVisible(false);
+        telaCadastroProfessor.setVisible(false);
+        telaCadastroLivro.setVisible(false);
+        telaCadastroRevista.setVisible(false);
+        telaEmprestimo.setVisible(false);
+        telaDevolucao.setVisible(false);
+        telaRelatorio.setVisible(false);
+    }
+    
+    /*
+    Interfaces
+    */
+    public void aviso() {
+        telaprincipal.setVisible(true);
+        JOptionPane.showMessageDialog(null, "Erro! Tente novamente.","Sistema Biblioteca",JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void comSucesso() {
+        JOptionPane.showMessageDialog(this, "Cadastrado com sucesso!","Sistema Biblioteca",JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void semSucesso() {
+       JOptionPane.showMessageDialog(this, "Já possui cadastro no sistema!","Sistema Biblioteca",JOptionPane.INFORMATION_MESSAGE); 
+    }
+    
+    public void abreEmprestimo() {
+        telaprincipal.setVisible(false);
+        telaEmprestimo.setVisible(true);
+        telaEmprestimo.setSize(400,250);
+        telaEmprestimo.setLocation(450,200);
+        
+    }
+
+    public void abreDevolucao() {
+        telaprincipal.setVisible(false);
+        telaDevolucao.setVisible(true);
+        telaDevolucao.setSize(400,150);
+        telaDevolucao.setLocation(450,200);
+    }
+
+    public void abreCadastroAluno() {
+        telaprincipal.setVisible(false);
+        telaCadastroAluno.setVisible(true);
+        telaCadastroAluno.setSize(400,300);
+        telaCadastroAluno.setLocation(450,200);
+    }
+
+    public void abreCadastroProfessor() {
+        telaprincipal.setVisible(false);
+        telaCadastroProfessor.setVisible(true);
+        telaCadastroProfessor.setSize(400,300);
+        telaCadastroProfessor.setLocation(450,200);
+    }
+
+    public void abreCadastroLivro() {
+        telaprincipal.setVisible(false);
+        telaCadastroLivro.setVisible(true);
+        telaCadastroLivro.setSize(400,300);
+        telaCadastroLivro.setLocation(450,200);
+    }
+    
+    public void abreCadastroRevista() {
+        telaprincipal.setVisible(false);
+        telaCadastroRevista.setVisible(true);
+        telaCadastroRevista.setSize(400,300);
+        telaCadastroRevista.setLocation(450,200);
+    }
+
+    public void abreRelatorio() {
+        telaprincipal.setVisible(false);
+        telaRelatorio.setVisible(true);
+        telaRelatorio.setSize(400,250);
+        telaRelatorio.setLocation(450,200);
+    }
+    
+    /*
+    Passa os dados das telas para os controladores correspondentes
+    */
+    public void cadastrar(PegaDadosTelaCadastroAluno dados){
+        Aluno aluno = new Aluno(dados.matricula,dados.nomeCompleto,dados.idade,dados.endereco,dados.filiacao,dados.turma);
+        controladorP.cadastrarAluno(aluno);
+    }
+    
+    public void cadastrar(PegaDadosTelaCadastroProfessor dados){
+        Professor professor = new Professor(dados.matricula,dados.nomeCompleto,dados.idade,dados.endereco,dados.filiacao,dados.responsavel,dados.disciplina);
+        controladorP.cadastrarProfessor(professor);
+    }
+    
+    public void cadastrar(PegaDadosTelaCadastroLivro dados){
+        Livro livro = new Livro(dados.codigo,dados.titulo,dados.autores,dados.genero,dados.faixa_etaria,dados.disponivel);
+        controladorE.cadastrarLivro(livro);
+    }
+    
+    public void cadastrar(PegaDadosTelaCadastroRevista dados){
+        Revista revista = new Revista(dados.codigo,dados.titulo,dados.ano,dados.mes,dados.volume,dados.disponivel);
+        controladorE.cadastrarRevista(revista);
+    }
+    
+    public void cadastrar(PegaDadosTelaEmprestimo dados){
+        Emprestimo emprestimo = new Emprestimo(dados.tipoPessoa,dados.matricula,dados.dataEmprestimo,dados.dataPlanejadaDevolucao,controladorE.buscaExemplarPeloCodigo(dados.codExemplarEmprestado));
+        controladorED.emprestaLivro(emprestimo);
+    }
+    
+    public void devolveLivro(PegaDadosTelaDevolucao dados){
+        Devolucao devolucao = new Devolucao(dados.dataDevolucao,dados.codExemplarEmprestado);
+        controladorED.devolveLivro(devolucao);
+    }
+    
+    public void gerarRelatorio (PegaDadosTelaRelatorio dados){
+        Relatorio relatorio = new Relatorio(dados.data);
+        controladorED.imprimir(relatorio);
+    }
+    
+    public void gerarRelatorioPessoa(){
+        controladorP.getAlunos();
+        controladorP.getProfessores();
+    }
+    
+    public void gerarRelatorioExemplar(){
+        controladorE.getLivros();
+        controladorE.getRevistas();
+    }
+    
+    public void gerarRelatorioEmprestimos(){
+        controladorED.getEmprestimos();
+    }
+}
