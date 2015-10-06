@@ -1,0 +1,149 @@
+package interfaces;
+
+import controle.ControladorBiblioteca;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import persistencia.MapeadorRevista;
+
+
+public class TelaPrincipal extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private Container container;
+    private JButton btEmprestimo;
+    private JButton btDevolucao;
+    private JButton btCadastroAluno;
+    private JButton btCadastroProfessor;
+    private JButton btCadastroLivro;
+    private JButton btCadastroRevista;
+    private JButton btRelatorio;
+    private JButton btSair;
+
+    public TelaPrincipal() {
+        super("Sistema Biblioteca");
+        container = getContentPane();
+        container.setLayout(new GridLayout(0,1));
+        GerenciadorBotoes btManager = new GerenciadorBotoes();
+        
+    btEmprestimo = new JButton();  
+    btDevolucao = new JButton();
+    btCadastroAluno = new JButton();
+    btCadastroProfessor = new JButton();
+    btCadastroLivro = new JButton();
+    btCadastroRevista = new JButton();
+    btRelatorio = new JButton();
+    btSair = new JButton();
+    
+    btEmprestimo.setText("Empréstimos");
+    btEmprestimo.setActionCommand("1");
+    btDevolucao.setText("Devoluções");
+    btDevolucao.setActionCommand("2");
+    btCadastroAluno.setText("Cadastro de Aluno");
+    btCadastroAluno.setActionCommand("3");
+    btCadastroProfessor.setText("Cadastro de Professor");
+    btCadastroProfessor.setActionCommand("4");
+    btCadastroLivro.setText("Cadastro Livro");
+    btCadastroLivro.setActionCommand("5");
+    btCadastroRevista.setText("Cadastro Revista");
+    btCadastroRevista.setActionCommand("6");
+    btRelatorio.setText("Relatório");
+    btRelatorio.setActionCommand("7");
+    btSair.setText("Sair");
+    btSair.setActionCommand("8");
+    
+    btEmprestimo.addActionListener(btManager);
+    btDevolucao.addActionListener(btManager);
+    btCadastroAluno.addActionListener(btManager);
+    btCadastroProfessor.addActionListener(btManager);
+    btCadastroLivro.addActionListener(btManager);
+    btCadastroRevista.addActionListener(btManager);
+    btRelatorio.addActionListener(btManager);
+    btSair.addActionListener(btManager);
+    
+    container.add(btEmprestimo);
+    container.add(btDevolucao);
+    container.add(btCadastroAluno);
+    container.add(btCadastroProfessor);
+    container.add(btCadastroLivro);
+    container.add(btCadastroRevista);
+    container.add(btRelatorio);
+    container.add(btSair);
+    
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private class GerenciadorBotoes implements ActionListener {
+        public GerenciadorBotoes() {}
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if (null != ae.getActionCommand())
+                switch (ae.getActionCommand()) {
+                case "1":
+                    try{
+                        ControladorBiblioteca.getInstance().abreEmprestimo();
+                    } catch (Exception e){
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    }   break;
+                case "2":
+                    try {
+                        ControladorBiblioteca.getInstance().abreDevolucao();
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    }   break;
+                case "3":
+                    try {
+                        ControladorBiblioteca.getInstance().abreCadastroAluno();
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                }   break;
+                case "4":
+                    try {
+                        ControladorBiblioteca.getInstance().abreCadastroProfessor();
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    }   break;
+                case "5":
+                    try {
+                        ControladorBiblioteca.getInstance().abreCadastroLivro();
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    }   break;
+                case "6":
+                    try {
+                        ControladorBiblioteca.getInstance().abreCadastroRevista();
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    }   break;
+                case "7":
+                    try {
+                        ControladorBiblioteca.getInstance().abreRelatorio();
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                    }   break;
+                case "8":
+                    try {
+                        System.exit(0);
+                    } catch (Exception e) {
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                        ControladorBiblioteca.getInstance().aviso();
+                }   break;
+                default:
+                    ControladorBiblioteca.getInstance().aviso();
+                    break;
+                }
+        }
+    }
+}
