@@ -1,0 +1,47 @@
+package dao;
+
+import java.io.Serializable;
+
+public class Exemplar implements Serializable{
+    private static final long serialVersionUID = 1L;
+    private Integer codigo;
+    private String titulo;
+    private String disponivel;
+    
+    public Exemplar(){}
+
+    public Exemplar(Integer codigo, String titulo, String disponivel) {
+        this.codigo = codigo;
+        this.titulo = titulo;
+        this.disponivel = disponivel;
+    }
+
+    public Exemplar(Integer cod) {
+        this.codigo = cod;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+    
+    public String isDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(String disponivel) {
+        this.disponivel = disponivel;
+    }
+    
+}
