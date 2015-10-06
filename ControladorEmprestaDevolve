@@ -1,0 +1,38 @@
+package controle;
+
+import dao.Devolucao;
+import dao.Emprestimo;
+import dao.Relatorio;
+import persistencia.MapeadorEmprestimo;
+
+
+public class ControladorEmprestaDevolve {
+    MapeadorEmprestimo mapEmprestimo;
+    
+    public ControladorEmprestaDevolve(){
+        mapEmprestimo = new MapeadorEmprestimo();
+    }
+    
+    public void getEmprestimos() {
+        System.out.println("\nEmpréstimos: ");
+        for (Emprestimo e : mapEmprestimo.getEmprestimos()){
+            System.out.println("Tipo: "+e.getTipoPessoa()+
+                    " | Matrícula: "+e.getMatricula().getMatricula()+
+                    " | Data Emprétimo: "+e.getDataEmprestimo()+
+                    " | Data Devolução: "+e.getDataPlanejadaDevolucao()+
+                    " | Exemplar: "+e.getCodExemplarEmprestado());
+        }
+    }
+
+    public void emprestaLivro(Emprestimo emprestimo) {
+        mapEmprestimo.put(emprestimo);
+    }
+
+    public void devolveLivro(Devolucao devolucao) {
+        mapEmprestimo.remove(devolucao);
+    }
+
+    public void imprimir(Relatorio relatorio) {
+        
+    }
+}
