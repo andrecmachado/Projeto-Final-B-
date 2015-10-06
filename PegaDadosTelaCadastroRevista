@@ -1,0 +1,11 @@
+package wrapper;
+
+
+public class PegaDadosTelaCadastroRevista {
+    public Integer codigo;
+    public String titulo;
+    public String disponivel;
+    public String ano;
+    public String mes;
+    public String volume;
+}
