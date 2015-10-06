@@ -1,0 +1,48 @@
+package dao;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class Devolucao implements Serializable{
+    private static final long serialVersionUID = 1L;
+    private Date dataDevolucao;
+    private Exemplar codExemplarEmprestado;
+    private final double multa = 10.00;
+    private final int prazoAluno = 7;
+    private final int prazoProfessor = 10;
+    
+    public Devolucao(){}
+
+    public Devolucao(Date dataDevolucao, Exemplar codExemplarEmprestado) {
+        this.dataDevolucao = dataDevolucao;
+        this.codExemplarEmprestado = codExemplarEmprestado;
+    }
+
+    public Date getDataDevolucao() {
+        return dataDevolucao;
+    }
+
+    public void setDataDevolucao(Date dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+    }
+
+    public Exemplar getCodExemplarEmprestado() {
+        return codExemplarEmprestado;
+    }
+
+    public void setCodExemplarEmprestado(Exemplar codExemplarEmprestado) {
+        this.codExemplarEmprestado = codExemplarEmprestado;
+    }
+
+    public double getMulta() {
+        return multa;
+    }
+
+    public int getPrazoAluno() {
+        return prazoAluno;
+    }
+
+    public int getPrazoProfessor() {
+        return prazoProfessor;
+    }
+}
