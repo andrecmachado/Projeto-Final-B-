@@ -1,0 +1,8 @@
+package wrapper;
+
+import java.util.Date;
+
+
+public class PegaDadosTelaRelatorio {
+    public Date data;
+}
