@@ -1,0 +1,12 @@
+package wrapper;
+
+import dao.Pessoa;
+import java.util.Date;
+
+public class PegaDadosTelaEmprestimo {
+    public Date dataEmprestimo;
+    public Date dataPlanejadaDevolucao;
+    public int codExemplarEmprestado;
+    public String tipoPessoa;
+    public Pessoa matricula;
+}
