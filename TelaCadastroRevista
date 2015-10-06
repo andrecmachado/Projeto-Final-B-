@@ -1,0 +1,125 @@
+package interfaces;
+
+import controle.ControladorBiblioteca;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import persistencia.MapeadorRevista;
+import wrapper.PegaDadosTelaCadastroRevista;
+
+
+public class TelaCadastroRevista extends JFrame {
+    private static final long serialVersionUID = 1L;
+    JLabel lbCodigo, lbTitulo, lbDisponivel, lbAno, lbMes, lbVolume;
+    JTextField tfCodigo, tfTitulo, tfDisponivel, tfAno, tfMes, tfVolume;
+    JButton btSalvar, btVoltar;
+    
+    public TelaCadastroRevista() {
+        Container container = getContentPane();
+        container.setLayout(new GridLayout(0,2));
+        GerenciadorBotoes btManager = new GerenciadorBotoes();
+
+        lbCodigo = new JLabel();
+        lbTitulo = new JLabel();
+        lbDisponivel = new JLabel();
+        lbAno = new JLabel();
+        lbMes = new JLabel();
+        lbVolume = new JLabel();
+        tfCodigo = new JTextField();
+        tfTitulo = new JTextField();
+        tfDisponivel = new JTextField();
+        tfAno = new JTextField();
+        tfMes = new JTextField();
+        tfVolume = new JTextField();
+        btSalvar = new JButton();
+        btVoltar = new JButton();
+        
+        lbCodigo.setText("Código: ");
+        lbTitulo.setText("Título: ");
+        lbDisponivel.setText("Disponível: ");
+        lbAno.setText("Ano: ");
+        lbMes.setText("Mês: ");
+        lbVolume.setText("Volume: ");
+        btSalvar.setText("Salvar");
+        btSalvar.setActionCommand("1");
+        btVoltar.setText("Voltar");
+        btVoltar.setActionCommand("2");
+        
+        btSalvar.addActionListener(btManager);
+        btVoltar.addActionListener(btManager);
+        
+        container.add(lbCodigo);
+        container.add(tfCodigo);
+        container.add(lbTitulo);
+        container.add(tfTitulo);
+        container.add(lbAno);
+        container.add(tfAno);
+        container.add(lbMes);
+        container.add(tfMes);
+        container.add(lbVolume);
+        container.add(tfVolume);
+        container.add(lbDisponivel);
+        container.add(tfDisponivel);
+        container.add(btSalvar);
+        container.add(btVoltar);
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private class GerenciadorBotoes implements ActionListener{
+
+        public GerenciadorBotoes() {}
+        
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if (null != ae.getActionCommand())
+                switch (ae.getActionCommand()) {
+                case "1":
+                    try{
+                            PegaDadosTelaCadastroRevista dados = new PegaDadosTelaCadastroRevista();
+                            int cod = Integer.parseInt(tfCodigo.getText());
+                            dados.codigo = cod;
+                            dados.titulo = tfTitulo.getText();
+                            dados.ano = tfAno.getText();
+                            dados.mes = tfMes.getText();
+                            dados.volume = tfVolume.getText();
+                            dados.disponivel = tfDisponivel.getText();
+                            ControladorBiblioteca.getInstance().cadastrar(dados);
+                            tfCodigo.setText(null);
+                            tfTitulo.setText(null);
+                            tfDisponivel.setText(null);
+                            tfAno.setText(null);
+                            tfMes.setText(null);
+                            tfVolume.setText(null);
+                    } catch (Exception e){
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                    }   break;
+                case "2":
+                    try{
+                        ControladorBiblioteca.getInstance().voltar();
+                        tfCodigo.setText(null);
+                        tfTitulo.setText(null);
+                        tfDisponivel.setText(null);
+                        tfAno.setText(null);
+                        tfMes.setText(null);
+                        tfVolume.setText(null);
+                    } catch (Exception e){
+                        Logger.getLogger(MapeadorRevista.class.getName()).log(Level.SEVERE, null, e);
+                    }   break;
+                default:
+                    ControladorBiblioteca.getInstance().aviso();
+                    break;
+                }
+        }
+
+        
+    }
+    
+}
